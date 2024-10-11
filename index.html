@@ -163,7 +163,7 @@
         
         <p class="score" id="myScore">You're score: </p>
         <p class="score" id="computerScore">Computer score: </p>
-        <p class="score" id="tie">Tie: </p>
+        <p class="score" id="tie">Tied: </p>
 
         <img src="" alt="" id="computerMove" class="computerMove">
         <p class="finalMessage" id="finalMessage"></p>
@@ -221,7 +221,7 @@
             if(myMove === computerMove){
                 outcome = 'tie'
                 tieScore ++;
-                tie.innerText = `Tie: ${tieScore}`;
+                tie.innerText = `Tied: ${tieScore}`;
             }else if(
                 (myMove === rock && computerMove === 'scissor') ||
                 (myMove === paper && computerMove === 'rock') ||
