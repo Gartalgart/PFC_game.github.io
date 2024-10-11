@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rock-paper-scissor game</title>
+</head>
+<body>
+    <style>
+        body{
+            background-image: url('images/rock-paper-scissors.png');
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .container{
+            background-color: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 30px;
+            width: 500px;
+            height: 500px;
+            padding: 5px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .title{
+            font-size: 30px;
+            font-weight: 600;
+            text-align: center;
+            padding-bottom: 20px;
+        }
+
+        img{
+            width: 70px;
+            width: 70px;
+        }
+
+        button{
+            border: 5px solid black;
+            border-radius: 50%;
+            padding: 10px;
+            background-color: yellow; 
+        }
+
+        button:hover{
+            opacity: 0.7;
+        }
+
+        .buttons{
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+            gap: 20px;
+        }
+
+        .reset{
+            font-size: 20px;
+            font-weight: 500;
+            background-color: red;
+            width: 85px;
+            height: 85px;
+        }
+
+        .computerMove{
+            display: none;
+            position: relative;
+            left: 40%;
+            background-color: green;
+            border: 5px solid black;
+            border-radius: 50%;
+            padding: 10px;
+        }
+
+        .score{
+            font-size: 20px;
+        }
+
+        .finalMessage{
+            display: none;
+            justify-content: center;
+            margin-top: 50px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .globaleScore{
+            position: absolute;
+            left: 50%;
+            top: 95%;
+            transform: translate(-50%, -95%);
+            font-size: 20px;
+            font-weight: 500;
+        }
+    </style>
+
+    <div class="container">
+        <p class="title">Rock Paper Scissors</p>
+
+        <div class="buttons">
+            <button id="btn" onclick="
+                let myMove = rock;
+                console.log(`Me: ${myMove}`);
+                let compMove = computerMove();
+                result(myMove, compMove); 
+            "><img src="images/fist.png" alt="rock"></button>
+            <button id="btn" onclick="
+                myMove = paper;
+                console.log(`Me: ${myMove}`);
+                compMove = computerMove();
+                result(myMove, compMove); 
+            "><img src="images/hand-paper.png" alt="paper"></button>
+            <button id="btn" onclick="
+                myMove = scissor
+                console.log(`Me: ${myMove}`);
+                compMove = computerMove();
+                result(myMove, compMove); 
+            "><img src="images/scissors.png" alt="scissor"></button>
+            <button class="reset" onclick="
+                reset();
+            ">Reset</button>
+        </div>
+        
+        <p class="score" id="myScore">You're score: </p>
+        <p class="score" id="computerScore">Computer score: </p>
+        <p class="score" id="tie">Tie: </p>
+
+        <img src="" alt="" id="computerMove" class="computerMove">
+        <p class="finalMessage" id="finalMessage"></p>
+        <p class="globaleScore" id="globaleScore"></p>
+    </div>
+    
+    
+
+    <script>
+        let scoreMe = document.getElementById('myScore');
+        let scoreComputer = document.getElementById('computerScore');
+        let tie = document.getElementById('tie');
+        let moveComputer = document.getElementById('computerMove');
+        let finalMessage = document.getElementById('finalMessage');
+        let globaleScore = document.getElementById('globaleScore');
+        let buttons = document.querySelectorAll('button[id="btn"]');
+        let rock = 'rock';
+        let paper = 'paper';
+        let scissor = 'scissor';
+        let myScore = 0;
+        let computerScore = 0;
+        let tieScore = 0;
+        let imageComputerMove = '';
+        let finalScoreMe = 0;
+        let finalScoreComputeur = 0;
+        let savedOnclicks = {};
+
+        function computerMove(){
+            let randomNumber = Math.random();
+            let compMove = '';
+            if(randomNumber < (1/3)){
+                compMove = 'rock';
+                imageComputerMove = 'images/fist.png';
+                moveComputer.src = imageComputerMove;
+                moveComputer.style.display = 'block';
+                console.log(`Computer: ${compMove}`);
+            }else if(randomNumber > (1/3) && randomNumber < (2/3)){
+                compMove = 'paper';
+                imageComputerMove = 'images/hand-paper.png';
+                moveComputer.src = imageComputerMove;
+                moveComputer.style.display = 'block';
+                console.log(`Computer: ${compMove}`);
+            }else{
+                compMove = 'scissor';
+                imageComputerMove = 'images/scissors.png';
+                moveComputer.src = imageComputerMove;
+                moveComputer.style.display = 'block';
+                console.log(`Computer: ${compMove}`);
+            }
+            return compMove;
+        }
+
+        function result(myMove, computerMove){
+            let outcome = '';
+            if(myMove === computerMove){
+                outcome = 'tie'
+                tieScore ++;
+                tie.innerText = `Tie: ${tieScore}`;
+            }else if(
+                (myMove === rock && computerMove === 'scissor') ||
+                (myMove === paper && computerMove === 'rock') ||
+                (myMove === scissor && computerMove === 'paper')
+            ){
+                outcome = 'You win !!!';
+                myScore ++;
+                scoreMe.innerText = `You're score: ${myScore}`;
+                console.log(myScore);
+            }else{
+                outcome = 'computer win!';
+                computerScore ++;
+                scoreComputer.innerText = `Computer score: ${computerScore}`;
+                console.log(computerScore);
+            }
+            console.log(`Result: ${outcome}`);
+            poPup();
+        }
+
+        function reset(){
+            myScore = 0;
+            scoreMe.innerText = `You're score: ${myScore}`;
+            computerScore = 0;
+            scoreComputer.innerText = `Computer score: ${computerScore}`;
+            tieScore = 0;
+            tie.innerText = `Tie: ${tieScore}`;
+            moveComputer.style.display = 'none';
+            finalMessage.style.display = 'none';
+            enableAllOnclick();
+        }
+
+        function poPup(){
+            if(myScore === 3){
+                setTimeout(() =>{
+                    finalScoreMe ++;
+                    finalMessage.innerText = 'You win !!!';
+                    moveComputer.style.display = 'none';
+                    finalMessage.style.display = 'flex';
+                    globaleScore.innerText = `${finalScoreMe}/${finalScoreComputeur}`;
+                    disableAllOnclick();
+                }, 100);   
+            }else if(computerScore === 3){
+                setTimeout(() =>{
+                    finalScoreComputeur ++;
+                    finalMessage.innerText = 'Computer win!';
+                    moveComputer.style.display = 'none';
+                    finalMessage.style.display = 'flex';
+                    globaleScore.innerText = `${finalScoreMe}/${finalScoreComputeur}`;
+                    disableAllOnclick();
+                }, 100);  
+            }
+        }
+
+        function disableAllOnclick(){
+            buttons.forEach(button => {
+                savedOnclicks[button.id] = button.onclick;
+                button.onclick = null;
+                button.style.background = 'grey';
+            });
+        }
+
+        function enableAllOnclick(){
+            buttons.forEach(button => {
+                if(savedOnclicks[button.id]){
+                    button.onclick = savedOnclicks[button.id];
+                    button.style.background = 'yellow';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
