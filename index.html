@@ -138,24 +138,9 @@
         <p class="title">Rock Paper Scissors</p>
 
         <div class="buttons">
-            <button id="btn" onclick="
-                let myMove = rock;
-                console.log(`Me: ${myMove}`);
-                let compMove = computerMove();
-                result(myMove, compMove); 
-            "><img src="images/fist.png" alt="rock"></button>
-            <button id="btn" onclick="
-                myMove = paper;
-                console.log(`Me: ${myMove}`);
-                compMove = computerMove();
-                result(myMove, compMove); 
-            "><img src="images/hand-paper.png" alt="paper"></button>
-            <button id="btn" onclick="
-                myMove = scissor
-                console.log(`Me: ${myMove}`);
-                compMove = computerMove();
-                result(myMove, compMove); 
-            "><img src="images/scissors.png" alt="scissor"></button>
+            <button id="btnRock"><img src="images/fist.png" alt="rock"></button>
+            <button id="btnPaper"><img src="images/hand-paper.png" alt="paper"></button>
+            <button id="btnScissor"><img src="images/scissors.png" alt="scissor"></button>
             <button class="reset" onclick="
                 reset();
             ">Reset</button>
@@ -179,7 +164,6 @@
         let moveComputer = document.getElementById('computerMove');
         let finalMessage = document.getElementById('finalMessage');
         let globaleScore = document.getElementById('globaleScore');
-        let buttons = document.querySelectorAll('button[id="btn"]');
         let rock = 'rock';
         let paper = 'paper';
         let scissor = 'scissor';
@@ -250,7 +234,7 @@
             tie.innerText = `Tie: ${tieScore}`;
             moveComputer.style.display = 'none';
             finalMessage.style.display = 'none';
-            enableAllOnclick();
+            enableButtons();
         }
 
         function poPup(){
@@ -261,7 +245,7 @@
                     moveComputer.style.display = 'none';
                     finalMessage.style.display = 'flex';
                     globaleScore.innerText = `${finalScoreMe}/${finalScoreComputeur}`;
-                    disableAllOnclick();
+                    disableButtons();
                 }, 100);   
             }else if(computerScore === 3){
                 setTimeout(() =>{
@@ -270,27 +254,40 @@
                     moveComputer.style.display = 'none';
                     finalMessage.style.display = 'flex';
                     globaleScore.innerText = `${finalScoreMe}/${finalScoreComputeur}`;
-                    disableAllOnclick();
+                    disableButtons();
                 }, 100);  
             }
         }
 
-        function disableAllOnclick(){
-            buttons.forEach(button => {
-                savedOnclicks[button.id] = button.onclick;
-                button.onclick = null;
+        function disableButtons(){
+            document.querySelectorAll('button[id^="btn"]').forEach(button => {
+                button.disabled = true;
                 button.style.background = 'grey';
             });
         }
 
-        function enableAllOnclick(){
-            buttons.forEach(button => {
-                if(savedOnclicks[button.id]){
-                    button.onclick = savedOnclicks[button.id];
-                    button.style.background = 'yellow';
-                }
+        function enableButtons(){
+            document.querySelectorAll('button[id^="btn"]').forEach(button => {
+                button.disabled = false;
+                button.style.background = 'yellow';
+    
             });
         }
+
+        document.getElementById('btnRock').addEventListener('click', () => {
+            console.log('you: rock');
+            result('rock', computerMove());
+        });
+
+        document.getElementById('btnPaper').addEventListener('click', () => {
+            console.log('you: paper');
+            result('paper', computerMove());
+        });
+
+        document.getElementById('btnScissor').addEventListener('click', () => {
+            console.log('you: scissor');
+            result('scissor', computerMove());
+        });
     </script>
 </body>
 </html>
